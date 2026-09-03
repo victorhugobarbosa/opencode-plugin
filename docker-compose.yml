@@ -10,11 +10,6 @@ services:
       # persiste estado do opencode entre restarts
       - opencode_state:/root/.local/state/opencode
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
 volumes:
   opencode_state:

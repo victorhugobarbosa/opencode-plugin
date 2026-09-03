@@ -1,0 +1,15 @@
+{
+  "name": "opencode-plugin",
+  "description": "Delegate coding tasks to OpenCode autonomous AI agent — skills and agents for code delegation via SSE gateway",
+  "owner": {
+    "name": "victorhugobarbosa",
+    "url": "https://github.com/victorhugobarbosa"
+  },
+  "plugins": [
+    {
+      "name": "opencode",
+      "source": ".",
+      "description": "Delegate coding tasks to OpenCode autonomous AI agent"
+    }
+  ]
+}

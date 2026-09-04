@@ -1,6 +1,6 @@
 ---
 name: opencode
-description: Delegate coding tasks to the OpenCode AI agent on VPS. Use for complex or long-running coding tasks, or when you want to preserve Claude credits by using free OpenRouter models. OpenCode runs autonomously and reports back when done.
+description: Delegate coding tasks to the OpenCode AI agent on VPS. Use for complex or long-running coding tasks, or when you want to preserve Claude credits by using free models. OpenCode runs autonomously and reports back when done.
 ---
 
 You have access to the **OpenCode** agent running on a remote VPS via MCP tools (`opencode_run`, `opencode_fire`, etc.).
@@ -23,6 +23,14 @@ You have access to the **OpenCode** agent running on a remote VPS via MCP tools 
 | `opencode_reply` | Continue a session (corrections, follow-ups) |
 | `opencode_session_revert` | Undo all changes from a session |
 | `opencode_conversation` | Get full message history |
+| `opencode_provider_models` | List models a provider currently offers |
+
+## Model selection
+
+Use the `delegate` skill for the fallback chain and error triage. Summary:
+start on provider `opencode` (Zen free models), fall through to
+`openrouter` free models only once Zen is exhausted. Quota error advances
+the chain; server error retries once first; auth error stops.
 
 ## Workflow
 
@@ -31,26 +39,19 @@ You have access to the **OpenCode** agent running on a remote VPS via MCP tools 
 result = opencode_run(
   prompt="Clear, self-contained task description...",
   directory="/workspace/project-name",
-  providerID="openrouter",
-  modelID="google/gemini-2.0-flash-exp:free"
+  providerID="opencode",
+  modelID="mimo-v2.5-free"
 )
 opencode_review_changes(sessionId=result.sessionId)
 ```
 
 ### Long / parallel task
 ```
-sessionId = opencode_fire(prompt="...", directory="...", providerID="openrouter")
+sessionId = opencode_fire(prompt="...", directory="...", providerID="opencode", modelID="mimo-v2.5-free")
 # continue other work...
-opencode_check(sessionId)          # check progress anytime
+opencode_check(sessionId)           # check progress anytime
 opencode_review_changes(sessionId)  # after done
 ```
-
-## Free OpenRouter models (use in order)
-
-1. `google/gemini-2.0-flash-exp:free` — default, fast, good quality
-2. `google/gemini-2.5-flash:free` — smarter, slightly slower
-3. `meta-llama/llama-3.3-70b-instruct:free` — strong reasoning fallback
-4. `mistralai/mistral-7b-instruct:free` — lightweight fallback
 
 ## Writing effective task prompts
 

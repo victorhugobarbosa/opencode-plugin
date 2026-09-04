@@ -1,0 +1,9 @@
+{
+  "name": "opencode",
+  "description": "Delegate coding tasks to the OpenCode autonomous AI agent running on a remote VPS via MCP, using free OpenRouter models",
+  "version": "1.0.0",
+  "author": {
+    "name": "victorhugobarbosa",
+    "url": "https://github.com/victorhugobarbosa"
+  }
+}

@@ -1,15 +1,19 @@
 services:
   opencode-gateway:
     build: ./server
-    ports:
-      - "8000:8000"
+    # não publica no host — só o Traefik alcança, pela dokploy-network
+    expose:
+      - "8000"
     environment:
       OPENROUTER_API_KEY: "${OPENROUTER_API_KEY}"
-      DEFAULT_MODEL: "${DEFAULT_MODEL:-google/gemini-2.0-flash-exp:free}"
+      DEFAULT_MODEL: "${DEFAULT_MODEL:-minimax/minimax-m2.7:free}"
     volumes:
       # persiste estado do opencode entre restarts
       - opencode_state:/root/.local/state/opencode
     restart: unless-stopped
+    labels:
+      # hash htpasswd vem de env var — repo é público, nunca commitar o hash
+      - "traefik.http.middlewares.opencode-auth.basicauth.users=${BASIC_AUTH_USERS}"
 
 volumes:
   opencode_state:

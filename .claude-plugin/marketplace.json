@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "opencode",
-      "source": ".",
+      "source": ".claude",
       "description": "Delegate coding tasks to OpenCode autonomous AI agent"
     }
   ]
